@@ -1,0 +1,42 @@
+services:
+  provisioning:
+    build:
+      args:
+        DOCKER_GID: ${DOCKER_GID}
+        GID: ${GID:-0}
+        UID: ${UID:-0}
+      context: Dockerfile.d/provisioning
+    command:
+      - zsh
+      - --login
+      - -c
+      - |
+        docker-util.keep-running.zsh --reset-status
+        ./scripts/init-with-azure.sh\
+         && docker-util.keep-running.zsh --record-success\
+         || docker-util.keep-running.zsh --record-failure
+        docker-util.keep-running.zsh --wait-signals
+    environment:
+      - AZURE_DEFAULT_LOCATION
+      - ARM_CLIENT_ID
+      - ARM_CLIENT_SECRET
+      - ARM_SUBSCRIPTION_ID
+      - ARM_TENANT_ID
+      - ENV_UNIQUE_ID
+      - TF_DATA_DIR=/workspace/cache/terraform
+      - TF_VAR_azure_default_location=${AZURE_DEFAULT_LOCATION}
+      - TF_VAR_base_dnsdomain=ms-${ENV_UNIQUE_ID}.sandb0x.site
+      - TF_VAR_env_unique_id=${ENV_UNIQUE_ID}
+    init: true
+    user: "${UID:-0}:${GID:-0}"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - provisioning-home-developer:/home/developer
+      - provisioning-home-root:/root # for macOS
+      - ./examples/provisioning:/workspace
+    working_dir: /workspace
+volumes:
+  provisioning-home-developer:
+    driver: local
+  provisioning-home-root:
+    driver: local
