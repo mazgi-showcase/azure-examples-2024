@@ -1,9 +1,12 @@
 resource "azurerm_public_ip" "for-main-appgw" {
   name                = "${var.env_unique_id}-for-main-appgw"
   location            = azurerm_resource_group.main.location
+  ip_tags             = {}
+  tags                = {}
   resource_group_name = azurerm_resource_group.main.name
   allocation_method   = "Static"
   sku                 = "Standard"
+  zones               = []
 }
 
 locals {
@@ -90,6 +93,8 @@ resource "azurerm_application_gateway" "main" {
     capacity = 2
   }
 
+  tags = {}
+
   url_path_map {
     name                               = local.url_path_map_name
     default_backend_address_pool_name  = local.backend_address_pool_name
@@ -102,6 +107,8 @@ resource "azurerm_application_gateway" "main" {
       firewall_policy_id         = azurerm_web_application_firewall_policy.main-for-specific-paths.id
     }
   }
+
+  zones = []
 }
 
 # resource "azurerm_monitor_diagnostic_setting" "for-main-appgw" {

@@ -16,7 +16,7 @@ output "appgw-multiple-waf-policies-4f9f" {
       main-linux-docker = module.appgw-multiple-waf-policies-4f9f.azurerm_linux_web_app.main-linux-docker
     }
     azurerm_public_ip = {
-      main = module.appgw-multiple-waf-policies-4f9f.azurerm_public_ip.for-main-appgw
+      for-main-appgw = module.appgw-multiple-waf-policies-4f9f.azurerm_public_ip.for-main-appgw
     }
   }
 }
