@@ -1,11 +1,11 @@
 services:
-  provisioning:
+  iac:
     build:
       args:
         DOCKER_GID: ${DOCKER_GID}
         GID: ${GID:-0}
         UID: ${UID:-0}
-      context: Dockerfile.d/provisioning
+      context: Dockerfile.d/iac
     command:
       - zsh
       - --login
@@ -31,12 +31,12 @@ services:
     user: "${UID:-0}:${GID:-0}"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - provisioning-home-developer:/home/developer
-      - provisioning-home-root:/root # for macOS
-      - ./examples/provisioning:/workspace
+      - iac-home-developer:/home/developer
+      - iac-home-root:/root # for macOS
+      - ./examples/iac:/workspace
     working_dir: /workspace
 volumes:
-  provisioning-home-developer:
+  iac-home-developer:
     driver: local
-  provisioning-home-root:
+  iac-home-root:
     driver: local

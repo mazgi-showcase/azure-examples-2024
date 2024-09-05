@@ -22,14 +22,14 @@ test $(uname -s) = 'Linux' && {
 
 ```console
 echo "ARM_SUBSCRIPTION_ID=YOUR_SUBSCRIPTION" >> .env
-echo "ARM_CLIENT_ID=$(jq -r .appId examples/provisioning/config/credentials/azure-service-principal.provisioning-owner)" >> .env
-echo "ARM_CLIENT_SECRET=$(jq -r .password examples/provisioning/config/credentials/azure-service-principal.provisioning-owner)" >> .env
-echo "ARM_TENANT_ID=$(jq -r .tenant examples/provisioning/config/credentials/azure-service-principal.provisioning-owner)" >> .env
+echo "ARM_CLIENT_ID=$(jq -r .appId examples/iac/config/credentials/azure-service-principal.provisioning-owner)" >> .env
+echo "ARM_CLIENT_SECRET=$(jq -r .password examples/iac/config/credentials/azure-service-principal.provisioning-owner)" >> .env
+echo "ARM_TENANT_ID=$(jq -r .tenant examples/iac/config/credentials/azure-service-principal.provisioning-owner)" >> .env
 echo "AZURE_DEFAULT_LOCATION=YOUR_REGION" >> .env
 ```
 
 ```console
-echo "ENV_UNIQUE_ID=YOUR_SUBSCRIPTION" >> .env
+echo "ENV_UNIQUE_ID=YOUR_ID_STRING" >> .env
 ```
 
 ### Start the container
@@ -39,7 +39,7 @@ docker compose up
 ```
 
 ```console
-docker compose exec provisioning zsh -l
+docker compose exec iac zsh -l
 ```
 
 ```console
